@@ -58,15 +58,18 @@ class InlineCalendarTile extends StatelessWidget {
         ? Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: Container(
-            height: 32,
-            width: 32,
-            alignment: Alignment.center,
-            child: _dayLabel(context, isSelected),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              shape: BoxShape.circle,
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Center(
+            child: Container(
+              height: 32,
+              width: 32,
+              alignment: Alignment.center,
+              child: _dayLabel(context, isSelected),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                shape: BoxShape.circle,
+              ),
             ),
           ),
         ),
