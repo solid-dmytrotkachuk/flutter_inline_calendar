@@ -36,7 +36,7 @@ class InlineCalendarPageView extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.only(left: 38.0, right: 38.0),
+              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
               child: InlineCalendarCaptionsRow(
                 key: key,
                 middleWeekday: 4,
