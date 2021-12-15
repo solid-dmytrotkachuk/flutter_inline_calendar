@@ -11,6 +11,7 @@ class InlineCalendarRows extends StatelessWidget {
   final DateTime middleDate;
   final int pageNumber;
   final Locale locale;
+  final DateTime? selectedDate;
   final void Function(DateTime) onChange;
 
   InlineCalendarRows({
@@ -19,6 +20,7 @@ class InlineCalendarRows extends StatelessWidget {
     required this.pageNumber,
     required this.locale,
     required this.onChange,
+    this.selectedDate,
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class InlineCalendarRows extends StatelessWidget {
               onChange(dateTime);
             }
           },
+          selectedDate: selectedDate,
           monthDay: dayOfMonth,
           isToday: isSameDate(dateTime, DateTime.now()),
           tileDate: removeTimeFrom(dateTime),

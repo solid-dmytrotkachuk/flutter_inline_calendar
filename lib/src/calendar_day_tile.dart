@@ -11,6 +11,7 @@ class InlineCalendarTile extends StatelessWidget {
   final bool isToday;
   final String title;
   final DateTime tileDate;
+  final DateTime? selectedDate;
 
   const InlineCalendarTile({
     Key? key,
@@ -18,6 +19,7 @@ class InlineCalendarTile extends StatelessWidget {
     required this.monthDay,
     required this.tileDate,
     this.isToday = false,
+    this.selectedDate,
     this.title = '',
   }) : super(key: key);
 
@@ -25,7 +27,9 @@ class InlineCalendarTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
-        bool isSelected = isSameDate(state.selectedDate, tileDate);
+        bool isSelected = selectedDate != null
+            ? isSameDate(selectedDate!, tileDate)
+            : isSameDate(state.selectedDate, tileDate);
         return Material(
           color: Colors.transparent,
           child: InkWell(
@@ -55,29 +59,29 @@ class InlineCalendarTile extends StatelessWidget {
 
   Widget _buildTile(BuildContext context, bool isSelected) {
     return Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    alignment: Alignment.center,
-                    child: _dayLabel(context, isSelected),
-                    decoration: BoxDecoration(
-                      color: isSelected ? Theme.of(context).primaryColor : null,
-                      shape: BoxShape.circle,
-                      border: isToday ? Border.all(color: Colors.grey) : null,
-                    ),
-                  ),
-                ),
-                Text(
-                  isSelected ? title : '',
-                  style: const TextStyle(color: Colors.black, fontSize: 12.0),
-                ),
-              ],
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              height: 32,
+              width: 32,
+              alignment: Alignment.center,
+              child: _dayLabel(context, isSelected),
+              decoration: BoxDecoration(
+                color: isSelected ? Theme.of(context).primaryColor : null,
+                shape: BoxShape.circle,
+                border: isToday ? Border.all(color: Colors.grey) : null,
+              ),
             ),
-        );
+          ),
+          Text(
+            isSelected ? title : '',
+            style: const TextStyle(color: Colors.black, fontSize: 12.0),
+          ),
+        ],
+      ),
+    );
   }
 }

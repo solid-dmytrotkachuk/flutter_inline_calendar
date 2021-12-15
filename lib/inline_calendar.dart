@@ -6,12 +6,14 @@ import 'package:inline_calendar/src/inline_calendar_page_view.dart';
 class InlineCalendar extends StatelessWidget {
   final int maxWeeks = 12;
   final void Function(DateTime)? onChange;
+  final DateTime? selectedDate;
   final CalendarCubit? controller;
 
   InlineCalendar({
     Key? key,
     this.onChange,
     this.controller,
+    this.selectedDate
   }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class InlineCalendar extends StatelessWidget {
       key: key,
       onChange: this.onChange,
       maxWeeks: this.maxWeeks,
+      selectedDate: selectedDate,
       height: 80,
       middleWeekday: 4,
     );

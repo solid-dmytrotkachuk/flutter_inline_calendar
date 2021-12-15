@@ -5,11 +5,11 @@ import 'package:inline_calendar/src/calendar_days_row.dart';
 import 'package:inline_calendar/src/cubit/calendar_cubit.dart';
 import 'package:inline_calendar/src/utilities.dart';
 
-
 class InlineCalendarPageView extends StatelessWidget {
   final double height;
   final int maxWeeks;
   final int middleWeekday;
+  final DateTime? selectedDate;
   final void Function(DateTime)? onChange;
 
   const InlineCalendarPageView({
@@ -17,16 +17,15 @@ class InlineCalendarPageView extends StatelessWidget {
     required this.height,
     required this.maxWeeks,
     required this.middleWeekday,
+    this.selectedDate,
     this.onChange,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final selectedDate =
-        context.watch<CalendarCubit>().state.selectedDate;
-    final selectedDateUtc =
-    DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day);
-    final firstWeekMiddleDate = _firstWeekMiddleDate(selectedDateUtc);
+    final selectedDateFromState =
+        selectedDate ?? context.watch<CalendarCubit>().state.selectedDate;
+    final firstWeekMiddleDate = _firstWeekMiddleDate(selectedDateFromState);
     final controller = context.read<CalendarCubit>().pageController;
     return Container(
       height: height,
@@ -46,7 +45,7 @@ class InlineCalendarPageView extends StatelessWidget {
             ),
           ),
           Container(
-            height: height-24,
+            height: height - 24,
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -66,8 +65,9 @@ class InlineCalendarPageView extends StatelessWidget {
                     controller: controller,
                     itemBuilder: (context, index) {
                       return InlineCalendarRows(
-                        middleDate:
-                        safeAdd(firstWeekMiddleDate, Duration(days: (index * 7))),
+                        selectedDate: selectedDateFromState,
+                        middleDate: safeAdd(
+                            firstWeekMiddleDate, Duration(days: (index * 7))),
                         onChange: onChange!,
                         pageNumber: index,
                         locale: Localizations.localeOf(context),
