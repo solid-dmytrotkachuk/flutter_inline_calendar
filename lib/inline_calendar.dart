@@ -18,7 +18,6 @@ class InlineCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(selectedDate);
     final controller = this.controller;
     if (controller == null) {
       return BlocProvider(

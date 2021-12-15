@@ -23,7 +23,6 @@ class InlineCalendarPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedDateFromState =
         context.watch<CalendarCubit>().state.selectedDate;
-    print(selectedDateFromState);
     final firstWeekMiddleDate = _firstWeekMiddleDate(selectedDateFromState);
     final controller = context.read<CalendarCubit>().pageController;
     return Container(
