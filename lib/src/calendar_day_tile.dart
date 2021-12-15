@@ -11,7 +11,6 @@ class InlineCalendarTile extends StatelessWidget {
   final bool isToday;
   final String title;
   final DateTime tileDate;
-  final DateTime? selectedDate;
 
   const InlineCalendarTile({
     Key? key,
@@ -19,7 +18,6 @@ class InlineCalendarTile extends StatelessWidget {
     required this.monthDay,
     required this.tileDate,
     this.isToday = false,
-    this.selectedDate,
     this.title = '',
   }) : super(key: key);
 
@@ -27,9 +25,7 @@ class InlineCalendarTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
-        bool isSelected = selectedDate != null
-            ? isSameDate(selectedDate!, tileDate)
-            : isSameDate(state.selectedDate, tileDate);
+        bool isSelected = isSameDate(state.selectedDate, tileDate);
         return Material(
           color: Colors.transparent,
           child: InkWell(

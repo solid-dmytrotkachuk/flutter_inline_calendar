@@ -9,7 +9,6 @@ class InlineCalendarPageView extends StatelessWidget {
   final double height;
   final int maxWeeks;
   final int middleWeekday;
-  final DateTime? selectedDate;
   final void Function(DateTime)? onChange;
 
   const InlineCalendarPageView({
@@ -17,14 +16,14 @@ class InlineCalendarPageView extends StatelessWidget {
     required this.height,
     required this.maxWeeks,
     required this.middleWeekday,
-    this.selectedDate,
     this.onChange,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final selectedDateFromState =
-        selectedDate ?? context.watch<CalendarCubit>().state.selectedDate;
+        context.watch<CalendarCubit>().state.selectedDate;
+    print(selectedDateFromState);
     final firstWeekMiddleDate = _firstWeekMiddleDate(selectedDateFromState);
     final controller = context.read<CalendarCubit>().pageController;
     return Container(
@@ -65,7 +64,6 @@ class InlineCalendarPageView extends StatelessWidget {
                     controller: controller,
                     itemBuilder: (context, index) {
                       return InlineCalendarRows(
-                        selectedDate: selectedDateFromState,
                         middleDate: safeAdd(
                             firstWeekMiddleDate, Duration(days: (index * 7))),
                         onChange: onChange!,

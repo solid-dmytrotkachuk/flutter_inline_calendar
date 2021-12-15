@@ -13,15 +13,18 @@ class InlineCalendar extends StatelessWidget {
     Key? key,
     this.onChange,
     this.controller,
-    this.selectedDate
+    this.selectedDate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(selectedDate);
     final controller = this.controller;
     if (controller == null) {
       return BlocProvider(
-        create: (_) => CalendarCubit(),
+        create: (_) => CalendarCubit(
+          initialDate: selectedDate ?? DateTime.now()
+        ),
         child: _buildInlineCalendar(),
       );
     }
@@ -37,7 +40,6 @@ class InlineCalendar extends StatelessWidget {
       key: key,
       onChange: this.onChange,
       maxWeeks: this.maxWeeks,
-      selectedDate: selectedDate,
       height: 80,
       middleWeekday: 4,
     );
