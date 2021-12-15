@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inline_calendar/inline_calendar.dart';
+import 'package:inline_calendar/src/inline_calendar.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
         ),
         appBar: AppBar(
           title: Text('Inline Calendar'),
-          bottom: InlineCalendar(
+          bottom: InlineCalendarPageView(
             controller: _controller,
             onChange: (DateTime d) => print(d),
           ),

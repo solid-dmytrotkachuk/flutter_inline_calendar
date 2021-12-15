@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:inline_calendar/inline_calendar.dart';
+import 'package:inline_calendar/src/inline_calendar_page_view.dart';
 import 'package:inline_calendar/src/utilities.dart';
 import 'package:intl/intl.dart';
 
