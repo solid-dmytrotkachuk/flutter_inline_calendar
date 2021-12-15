@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inline_calendar/src/inline_calendar.dart';
+import 'package:inline_calendar/inline_calendar.dart';
+import 'package:inline_calendar/src/cubit/calendar_cubit.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,19 +22,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _controller.selectedDate =
-                _controller.state.selectedDate.add(Duration(days: 1));
-          },
-          child: Text('Add a Day'),
-        ),
-        appBar: AppBar(
-          title: Text('Inline Calendar'),
-          bottom: InlineCalendarPageView(
-            controller: _controller,
-            onChange: (DateTime d) => print(d),
-          ),
+        body: InlineCalendar(
+          controller: _controller,
+          onChange: (DateTime d) => print(d),
         ),
       ),
     );

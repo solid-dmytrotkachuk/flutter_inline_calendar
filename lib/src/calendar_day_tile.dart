@@ -34,7 +34,7 @@ class InlineCalendarTile extends StatelessWidget {
             hoverColor: Colors.transparent,
             onTap: onTap,
             child: Container(
-              width: 30,
+              width: 56,
               child: _buildTile(context, isSelected),
             ),
           ),
@@ -54,43 +54,30 @@ class InlineCalendarTile extends StatelessWidget {
   }
 
   Widget _buildTile(BuildContext context, bool isSelected) {
-    return isSelected
-        ? Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
+    return Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: Center(
-            child: Container(
-              height: 32,
-              width: 32,
-              alignment: Alignment.center,
-              child: _dayLabel(context, isSelected),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                shape: BoxShape.circle,
-              ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Container(
+                    height: 32,
+                    width: 32,
+                    alignment: Alignment.center,
+                    child: _dayLabel(context, isSelected),
+                    decoration: BoxDecoration(
+                      color: isSelected ? Theme.of(context).primaryColor : null,
+                      shape: BoxShape.circle,
+                      border: isToday ? Border.all(color: Colors.grey) : null,
+                    ),
+                  ),
+                ),
+                Text(
+                  isSelected ? title : '',
+                  style: const TextStyle(color: Colors.black, fontSize: 12.0),
+                ),
+              ],
             ),
-          ),
-        ),
-        Text(
-          title,
-          style: const TextStyle(color: Colors.black, fontSize: 12.0),
-        ),
-      ],
-    )
-        : isToday
-        ? Container(
-      height: 32,
-      width: 32,
-      alignment: Alignment.center,
-      child: _dayLabel(context, isSelected),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey),
-      ),
-    )
-        : _dayLabel(context, isSelected);
+        );
   }
 }
