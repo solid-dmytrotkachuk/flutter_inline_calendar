@@ -1,76 +1,104 @@
-library inline_calendar;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inline_calendar/src/calendar_captions_row.dart';
-import 'package:inline_calendar/src/calendar_page_view.dart';
+import 'package:inline_calendar/src/calendar_days_row.dart';
 import 'package:inline_calendar/src/cubit/calendar_cubit.dart';
-import 'dart:ui';
+import 'package:inline_calendar/src/utilities.dart';
 
-export 'package:inline_calendar/src/cubit/calendar_cubit.dart';
 
-class InlineCalendar extends StatelessWidget implements PreferredSizeWidget {
-  // Maximum weeks to render
-  final int maxWeeks = 12;
+class InlineCalendar extends StatelessWidget {
+  final double height;
+  final int maxWeeks;
+  final int middleWeekday;
   final void Function(DateTime)? onChange;
-  final CalendarCubit? controller;
 
-  /// Creates an inline vertical calendar widget.
-  InlineCalendar({
+  const InlineCalendar({
     Key? key,
+    required this.height,
+    required this.maxWeeks,
+    required this.middleWeekday,
     this.onChange,
-    this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-    final controller = this.controller;
-    if (controller == null) {
-      return BlocProvider(
-        create: (_) => CalendarCubit(),
-        child: _buildInlineCalendar(locale, context),
-      );
-    }
-
-    return BlocProvider.value(
-      value: controller,
-      child: _buildInlineCalendar(locale, context),
+    final selectedDate =
+        context.watch<CalendarCubit>().state.selectedDate;
+    final selectedDateUtc =
+    DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day);
+    final firstWeekMiddleDate = _firstWeekMiddleDate(selectedDateUtc);
+    final controller = context.read<CalendarCubit>().pageController;
+    return Container(
+      height: height,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 40.0, right: 45.0),
+              child: InlineCalendarCaptionsRow(
+                key: key,
+                middleWeekday: 4,
+                height: 24.0,
+                locale: Localizations.localeOf(context),
+              ),
+            ),
+          ),
+          Container(
+            height: height-34,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              children: [
+                IconButton(
+                  iconSize: 15.0,
+                  padding: EdgeInsets.zero,
+                  onPressed: () => controller.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn),
+                  icon: const Icon(Icons.arrow_back_ios),
+                  hoverColor: Colors.transparent,
+                ),
+                Flexible(
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: controller,
+                    itemBuilder: (context, index) {
+                      return InlineCalendarRows(
+                        middleDate:
+                        safeAdd(firstWeekMiddleDate, Duration(days: (index * 7))),
+                        onChange: onChange!,
+                        pageNumber: index,
+                        locale: Localizations.localeOf(context),
+                      );
+                    },
+                    itemCount: maxWeeks + 1,
+                  ),
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  iconSize: 15.0,
+                  onPressed: () => controller.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn),
+                  icon: const Icon(Icons.arrow_forward_ios),
+                  hoverColor: Colors.transparent,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Column _buildInlineCalendar(Locale locale, BuildContext context) {
-    return Column(
-      children: [
-        CalendarCaptionsRow(
-          key: key,
-          middleWeekday: locale.countryCode == 'IR' ? 2 : 4,
-          locale: locale,
-          height: MediaQuery.of(context).orientation == Orientation.portrait
-              ? MediaQuery.of(context).size.width / 7
-              : MediaQuery.of(context).size.height / 7,
-        ),
-        CalendarPageView(
-          key: key,
-          onChange: this.onChange,
-          maxWeeks: this.maxWeeks,
-          height: MediaQuery.of(context).orientation == Orientation.portrait
-              ? MediaQuery.of(context).size.width / 7
-              : MediaQuery.of(context).size.height / 7,
-          middleWeekday: locale.countryCode == 'IR' ? 2 : 4,
-        ),
-      ],
+  DateTime _firstWeekMiddleDate(DateTime baseDate) {
+    final DateTime middleDate = safeAdd(
+      baseDate,
+      Duration(days: middleWeekday - baseDate.weekday),
     );
-  }
 
-  @override
-  Size get preferredSize {
-    final pixelRatio = window.devicePixelRatio;
-    final logicalScreenSize = window.physicalSize / pixelRatio;
-    final logicalWidth = logicalScreenSize.width;
-    final logicalHeight = logicalScreenSize.height;
-    final smallerSize =
-        logicalHeight < logicalWidth ? logicalHeight : logicalWidth;
-    return Size.fromHeight((smallerSize / 7) * 2.1);
+    return safeSubtract(middleDate, Duration(days: (7 * maxWeeks ~/ 2)));
   }
 }

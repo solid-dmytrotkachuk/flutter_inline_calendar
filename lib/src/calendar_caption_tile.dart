@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 
-class CalendarCaptionTile extends StatelessWidget {
-  final String lable;
+class InlineDayPickerCaptionTile extends StatelessWidget {
+  final String label;
   final Color color;
 
-  const CalendarCaptionTile({
+  const InlineDayPickerCaptionTile({
     Key? key,
-    required this.lable,
+    required this.label,
     required this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 7,
+    return Container(
+      width: 32,
+      height: 32,
       child: Center(
         child: Text(
-          lable,
+          label,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: color,
-            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),

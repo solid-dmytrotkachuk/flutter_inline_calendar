@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:inline_calendar/src/calendar_caption_tile.dart';
 import 'package:inline_calendar/src/utilities.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
-class CalendarCaptionsRow extends StatelessWidget {
+class InlineCalendarCaptionsRow extends StatelessWidget {
   final double height;
   final int middleWeekday;
   final Locale locale;
 
-  const CalendarCaptionsRow({
+  const InlineCalendarCaptionsRow({
     Key? key,
     required this.middleWeekday,
     required this.locale,
@@ -21,7 +21,8 @@ class CalendarCaptionsRow extends StatelessWidget {
     initializeDateFormatting();
     return SizedBox(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: _buildCaptionTiles(locale, context),
       ),
       height: this.height,
@@ -32,7 +33,7 @@ class CalendarCaptionsRow extends StatelessWidget {
     List<Widget> tiles = [];
     DateTime middleDate = DateTime.now();
     while (middleDate.weekday != middleWeekday) {
-      middleDate = safeAdd(middleDate, Duration(days: 1));
+      middleDate = safeAdd(middleDate, const Duration(days: 1));
     }
 
     for (int i = 0; i < 7; i++) {
@@ -40,20 +41,12 @@ class CalendarCaptionsRow extends StatelessWidget {
         safeAdd(middleDate, Duration(days: i - 3)),
       );
 
-      tiles.add(CalendarCaptionTile(
-        lable: locale.languageCode.startsWith('ar')
-            ? abbrWeekName
-            : abbrWeekName[0],
-        color: _weekdayNameColor(context),
+      tiles.add(InlineDayPickerCaptionTile(
+        label: abbrWeekName[0],
+        color: Colors.grey,
       ));
     }
 
     return tiles;
-  }
-
-  Color _weekdayNameColor(BuildContext context) {
-    return Theme.of(context).appBarTheme.brightness == Brightness.dark
-        ? Colors.black87
-        : Colors.white;
   }
 }
