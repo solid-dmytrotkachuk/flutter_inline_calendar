@@ -25,6 +25,8 @@ class InlineCalendarPageView extends StatelessWidget {
         context.watch<CalendarCubit>().state.selectedDate;
     final firstWeekMiddleDate = _firstWeekMiddleDate(selectedDateFromState);
     final controller = context.read<CalendarCubit>().pageController;
+    final iconSize = 15.0;
+
     return Container(
       height: height,
       width: MediaQuery.of(context).size.width,
@@ -39,6 +41,7 @@ class InlineCalendarPageView extends StatelessWidget {
                 middleWeekday: 4,
                 height: 24.0,
                 locale: Localizations.localeOf(context),
+                horizontalPadding: iconSize,
               ),
             ),
           ),
@@ -48,7 +51,7 @@ class InlineCalendarPageView extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  iconSize: 15.0,
+                  iconSize: iconSize,
                   padding: EdgeInsets.zero,
                   onPressed: () => controller.previousPage(
                       duration: const Duration(milliseconds: 300),
@@ -75,7 +78,7 @@ class InlineCalendarPageView extends StatelessWidget {
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
-                  iconSize: 15.0,
+                  iconSize: iconSize,
                   onPressed: () => controller.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn),

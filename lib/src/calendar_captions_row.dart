@@ -8,18 +8,21 @@ class InlineCalendarCaptionsRow extends StatelessWidget {
   final double height;
   final int middleWeekday;
   final Locale locale;
+  final double horizontalPadding;
 
   const InlineCalendarCaptionsRow({
     Key? key,
     required this.middleWeekday,
     required this.locale,
     required this.height,
+    required this.horizontalPadding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
-    return SizedBox(
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
