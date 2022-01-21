@@ -34,9 +34,7 @@ class InlineCalendarTile extends StatelessWidget {
             hoverColor: Colors.transparent,
             onTap: onTap,
             child: Container(
-              child: Expanded(
-                child: _buildTile(context, isSelected),
-              ),
+              child: _buildTile(context, isSelected),
             ),
           ),
         );
